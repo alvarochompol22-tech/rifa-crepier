@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa: 2 Carteras Crepier</title>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #e11d48;
+            --free: #10b981;
+            --reserved: #f59e0b;
+            --paid: #ef4444;
+            --selected: #3b82f6;
+            --bg: #f8fafc;
+        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--primary); margin: 0; padding: 15px; }
+        .container { max-width: 750px; margin: 0 auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        
+        /* Header */
+        header { text-align: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px; }
+        .badge { background: #ffe4e6; color: var(--accent); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+        h1 { margin: 10px 0 5px; font-size: 1.8rem; color: #0f172a; }
+        .price { font-size: 1.25rem; font-weight: 800; color: var(--free); margin: 5px 0; }
+
+        /* Bank Info */
+        .bank-card { background: #f1f5f9; padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #d92762; font-size: 0.92rem; }
+        .bank-card h3 { margin: 0 0 8px; font-size: 1rem; color: #0f172a; }
+        .bank-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; flex-wrap: wrap; gap: 5px; }
+        .copy-btn { background: white; border: 1px solid #cbd5e1; padding: 3px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .copy-btn:active { background: #e2e8f0; }
+
+        /* Legend */
+        .legend { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; font-size: 0.85rem; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .dot { width: 14px; height: 14px; border-radius: 4px; }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 8px; margin-bottom: 25px; }
+        .num-btn {
+            aspect-ratio: 1; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center;
+        }
+        .num-btn:active { transform: scale(0.94); }
+        .status-free { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .status-selected { background: var(--selected); color: white; transform: scale(1.05); box-shadow: 0 2px 8px rgba(59,130,246,0.4); }
+        .status-reserved { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; cursor: not-allowed; }
+        .status-paid { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; cursor: not-allowed; text-decoration: line-through; opacity: 0.75; }
+
+        /* Checkout Bar */
+        .checkout-box { background: #f8fafc; border: 2px solid #e2e8f0; padding: 18px; border-radius: 12px; position: sticky; bottom: 10px; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
+        .selected-list { font-weight: 700; color: var(--selected); margin-bottom: 10px; }
+        .form-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        input { flex: 1; min-width: 180px; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+        .btn-submit { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; flex: 1; min-width: 200px; }
+        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        /* Admin */
+        .admin-footer { text-align: center; margin-top: 30px; }
+        .admin-link { color: #94a3b8; font-size: 0.8rem; cursor: pointer; text-decoration: underline; border: none; background: none; }
+        #admin-panel { display: none; margin-top: 20px; border-top: 2px dashed #cbd5e1; padding-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; }
+        .btn-sm { padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; color: white; font-size: 0.75rem; margin-right: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">✨ 2 GANADORES ✨</span>
+        <h1>Rifa: 2 Carteras Crepier</h1>
+        <div class="price">Valor del boleto: $2.00</div>
+        <small style="color:#64748b">Elige tus números disponibles (00 al 100) y envía tu comprobante</small>
+    </header>
+
+    <div class="bank-card">
+        <h3>🏦 Datos para Transferencia (Banco Guayaquil)</h3>
+        <div class="bank-row">
+            <span><strong>Titular:</strong> Chompol Aguilera Alvaro Jonathan</span>
+        </div>
+        <div class="bank-row">
+            <span><strong>Cuenta de Ahorros:</strong> 0023925724</span>
+            <button class="copy-btn" onclick="copyText('0023925724')">Copiar cuenta</button>
+        </div>
+        <div class="bank-row">
+            <span><strong>C.I.:</strong> 0950128801</span>
+            <button class="copy-btn" onclick="copyText('0950128801')">Copiar C.I.</button>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="dot" style="background:#dcfce7; border:1px solid #86efac;"></div> Disponible</div>
+        <div class="legend-item"><div class="dot" style="background:#3b82f6;"></div> Tu selección</div>
+        <div class="legend-item"><div class="dot" style="background:#fef3c7; border:1px solid #fcd34d;"></div> Reservado</div>
+        <div class="legend-item"><div class="dot" style="background:#fee2e2; border:1px solid #fca5a5;"></div> Pagado</div>
+    </div>
+
+    <div id="grid" class="grid">Cargando números...</div>
+
+    <div class="checkout-box" id="checkout-box" style="display:none;">
+        <div class="selected-list" id="selected-info">Números: - | Total: $0</div>
+        <div class="form-group">
+            <input type="text" id="buyer-name" placeholder="Tu Nombre y Apellido" required>
+            <input type="tel" id="buyer-phone" placeholder="Tu WhatsApp (ej. 0991234567)" required>
+            <button class="btn-submit" onclick="reserveNumbers()">Apartar y Enviar por WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="admin-footer">
+        <button class="admin-link" onclick="toggleAdmin()">Acceso Administrador</button>
+    </div>
+
+    <div id="admin-panel">
+        <h3>Panel de Control (Administrador)</h3>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Participante</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-table"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Configuración de Firebase integrada
+    const firebaseConfig = {
+        apiKey: "AIzaSyDWlE5JZfFO4KLHpDhkjcQFczzAjW-Qebw",
+        authDomain: "rifa-crepier.firebaseapp.com",
+        databaseURL: "https://rifa-crepier-default-rtdb.firebaseio.com",
+        projectId: "rifa-crepier",
+        storageBucket: "rifa-crepier.firebasestorage.app",
+        messagingSenderId: "20187022518",
+        appId: "1:20187022518:web:5c682a908d6807101b1217",
+        measurementId: "G-GQQYXDZ3Z1"
+    };
+
+    const ADMIN_PASS = "1234"; // Puedes cambiar esta contraseña de administrador si gustas
+    const WHATSAPP_NUMBER = "593979612027";
+    const TICKET_PRICE = 2;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const ticketsRef = ref(db, 'rifa_crepier');
+
+    let ticketsData = {};
+    let selectedNumbers = [];
+    let isAdmin = false;
+
+    // Generar lista del 00 al 100
+    const allNumbers = [];
+    for (let i = 0; i <= 100; i++) {
+        allNumbers.push(i < 10 ? `0${i}` : `${i}`);
+    }
+
+    // Escuchar cambios en tiempo real
+    onValue(ticketsRef, (snapshot) => {
+        ticketsData = snapshot.val() || {};
+        selectedNumbers = selectedNumbers.filter(num => !ticketsData[num]);
+        renderGrid();
+        updateCheckout();
+        if (isAdmin) renderAdminTable();
+    });
+
+    function renderGrid() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+
+        allNumbers.forEach(num => {
+            const btn = document.createElement('button');
+            btn.className = 'num-btn';
+            btn.textContent = num;
+
+            const info = ticketsData[num];
+            if (info) {
+                if (info.status === 'paid') {
+                    btn.classList.add('status-paid');
+                    btn.title = `Pagado por ${info.name}`;
+                } else {
+                    btn.classList.add('status-reserved');
+                    btn.title = `Reservado por ${info.name}`;
+                }
+            } else if (selectedNumbers.includes(num)) {
+                btn.classList.add('status-selected');
+                btn.onclick = () => toggleSelect(num);
+            } else {
+                btn.classList.add('status-free');
+                btn.onclick = () => toggleSelect(num);
+            }
+            grid.appendChild(btn);
+        });
+    }
+
+    function toggleSelect(num) {
+        if (selectedNumbers.includes(num)) {
+            selectedNumbers = selectedNumbers.filter(n => n !== num);
+        } else {
+            selectedNumbers.push(num);
+        }
+        renderGrid();
+        updateCheckout();
+    }
+
+    function updateCheckout() {
+        const box = document.getElementById('checkout-box');
+        const info = document.getElementById('selected-info');
+        if (selectedNumbers.length === 0) {
+            box.style.display = 'none';
+            return;
+        }
+        box.style.display = 'block';
+        const sorted = [...selectedNumbers].sort();
+        const total = sorted.length * TICKET_PRICE;
+        info.textContent = `Elegidos (${sorted.length}): ${sorted.join(', ')} — Total a transferir: $${total}`;
+    }
+
+    window.reserveNumbers = async () => {
+        const name = document.getElementById('buyer-name').value.trim();
+        const phone = document.getElementById('buyer-phone').value.trim();
+
+        if (!name || !phone) {
+            alert("Por favor escribe tu nombre y número de WhatsApp.");
+            return;
+        }
+        if (selectedNumbers.length === 0) return;
+
+        const updates = {};
+        const sorted = [...selectedNumbers].sort();
+        sorted.forEach(num => {
+            updates[num] = {
+                name: name,
+                phone: phone,
+                status: 'reserved',
+                date: new Date().toLocaleString()
+            };
+        });
+
+        try {
+            await update(ticketsRef, updates);
+            const total = sorted.length * TICKET_PRICE;
+            const msg = `Hola! Soy *${name}*. Acabo de apartar los números: *${sorted.join(', ')}* para la *Rifa de 2 Carteras Crepier* (Total: $${total}). Enseguida envío mi comprobante de transferencia.`;
+            const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+            
+            selectedNumbers = [];
+            document.getElementById('buyer-name').value = '';
+            document.getElementById('buyer-phone').value = '';
+            window.open(waUrl, '_blank');
+        } catch (e) {
+            alert("Hubo un error al reservar. Revisa tu conexión o configuración.");
+            console.error(e);
+        }
+    };
+
+    window.copyText = (text) => {
+        navigator.clipboard.writeText(text);
+        alert("Copiado: " + text);
+    };
+
+    window.toggleAdmin = () => {
+        if (isAdmin) {
+            isAdmin = false;
+            document.getElementById('admin-panel').style.display = 'none';
+            return;
+        }
+        const pass = prompt("Ingresa la contraseña de administrador:");
+        if (pass === ADMIN_PASS) {
+            isAdmin = true;
+            document.getElementById('admin-panel').style.display = 'block';
+            renderAdminTable();
+        } else if (pass !== null) {
+            alert("Contraseña incorrecta");
+        }
+    };
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('admin-table');
+        tbody.innerHTML = '';
+        const keys = Object.keys(ticketsData).sort();
+
+        if (keys.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5">Aún no hay números reservados.</td></tr>';
+            return;
+        }
+
+        keys.forEach(num => {
+            const item = ticketsData[num];
+            const tr = document.createElement('tr');
+            const statusLabel = item.status === 'paid' 
+                ? '<strong style="color:#ef4444">Pagado</strong>' 
+                : '<strong style="color:#d97706">Reservado</strong>';
+
+            tr.innerHTML = `
+                <td><strong>${num}</strong></td>
+                <td>${item.name}</td>
+                <td>${item.phone}</td>
+                <td>${statusLabel}</td>
+                <td>
+                    ${item.status !== 'paid' ? `<button class="btn-sm" style="background:#10b981" onclick="markPaid('${num}')">Marcar Pagado</button>` : ''}
+                    <button class="btn-sm" style="background:#64748b" onclick="freeNumber('${num}')">Liberar</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    window.markPaid = (num) => {
+        update(ref(db, `rifa_crepier/${num}`), { status: 'paid' });
+    };
+
+    window.freeNumber = (num) => {
+        if (confirm(`¿Seguro que deseas liberar el número ${num}? Volverá a estar disponible.`)) {
+            remove(ref(db, `rifa_crepier/${num}`));
+        }
+    };
+</script>
+
+</body>
+</html>
